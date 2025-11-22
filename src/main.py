@@ -9,10 +9,10 @@ from config import (
     TRENDING_LANGUAGE,
     TRENDING_SINCE
 )
-from src.github_trending import GitHubTrending, TrendingProject
-from src.gemini_analyzer import GeminiAnalyzer
-from src.ntfy_notifier import NtfyNotifier
-from src.database import TrendingDatabase
+from github_trending import GitHubTrending, TrendingProject
+from gemini_analyzer import GeminiAnalyzer
+from ntfy_notifier import NtfyNotifier
+from database import TrendingDatabase
 
 
 def main():

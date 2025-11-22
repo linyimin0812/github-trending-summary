@@ -1,7 +1,7 @@
 import requests
 from typing import Optional
 from config import NTFY_TOPIC, NTFY_SERVER
-from src.github_trending import TrendingProject
+from github_trending import TrendingProject
 
 
 class NtfyNotifier:
