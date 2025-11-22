@@ -37,7 +37,7 @@ jobs:
           MAX_PROJECTS_PER_RUN: 3
           MIN_STARS_THRESHOLD: 100
         run: |
-          python run.py
+          python src/main.py
       
       - name: Commit database changes
         uses: stefanzweifel/git-auto-commit-action@v5
