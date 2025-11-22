@@ -25,9 +25,9 @@ class NtfyNotifier:
         title = f"{project.name} (+{project.stars_today:,} stars)"
         
         # 构建消息内容
-        message = f"""{analysis}
+        message = f"""
+{analysis}
 
----
 📊 **统计数据**
 ⭐ Stars: {project.stars:,} | 🍴 Forks: {project.forks:,}
 📈 今日 Stars: +{project.stars_today:,}
