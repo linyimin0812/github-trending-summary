@@ -3,7 +3,7 @@
 
 import sys
 from typing import List
-from src.config import (
+from config import (
     MAX_PROJECTS_PER_RUN, 
     MIN_STARS_THRESHOLD,
     TRENDING_LANGUAGE,
