@@ -1,4 +1,5 @@
 import requests
+import json
 from typing import Optional
 from config import NTFY_TOPIC, NTFY_SERVER
 from github_trending import TrendingProject
@@ -13,18 +14,9 @@ class NtfyNotifier:
     
     def send_project_analysis(self, project: TrendingProject, 
                             analysis: str) -> bool:
-        """发送项目分析通知
-        
-        Args:
-            project: TrendingProject 对象
-            analysis: Gemini 分析结果
-            
-        Returns:
-            发送是否成功
-        """
+        """发送项目分析通知"""
         title = f"🔥 {project.name} (+{project.stars_today:,} ⭐)"
         
-        # 构建消息内容
         message = f"""{analysis}
 
 ---
@@ -48,37 +40,27 @@ class NtfyNotifier:
                          priority: str = 'default',
                          tags: Optional[list] = None,
                          click_url: Optional[str] = None) -> bool:
-        """发送通用通知
+        """发送通用通知（使用 JSON 格式）"""
+        url = self.server
         
-        Args:
-            title: 通知标题
-            message: 通知内容
-            priority: 优先级 (min, low, default, high, urgent)
-            tags: 标签列表
-            click_url: 点击链接
-            
-        Returns:
-            发送是否成功
-        """
-        url = f"{self.server}/{self.topic}"
-        
-        headers = {
-            'Title': title,
-            'Priority': priority,
-            'Content-Type': 'text/plain; charset=utf-8'
+        # 使用 JSON 格式，完全支持 emoji
+        payload = {
+            'topic': self.topic,
+            'title': title,
+            'message': message,
+            'priority': priority
         }
         
         if tags:
-            headers['Tags'] = ','.join(tags)
+            payload['tags'] = tags
         
         if click_url:
-            headers['Click'] = click_url
+            payload['click'] = click_url
         
         try:
             response = requests.post(
                 url,
-                data=message.encode('utf-8'),
-                headers=headers,
+                json=payload,
                 timeout=30
             )
             response.raise_for_status()
