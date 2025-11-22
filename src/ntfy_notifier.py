@@ -23,6 +23,7 @@ class NtfyNotifier:
             发送是否成功
         """
         title = f"{project.name} (+{project.stars_today:,} stars)"
+        print(f"✅ Notification content: {analysis}")
         
         # 构建消息内容
         message = f"""
