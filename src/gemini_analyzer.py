@@ -1,6 +1,6 @@
 import google.generativeai as genai
 from typing import Optional
-from src.config import GEMINI_API_KEY
+from config import GEMINI_API_KEY
 from github_trending import TrendingProject
 
 
