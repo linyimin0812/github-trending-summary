@@ -2,20 +2,21 @@ name: Daily GitHub Trending Analysis
 
 on:
   schedule:
-    # 每天北京时间 10:00 (UTC 02:00) 执行
     - cron: '0 2 * * *'
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:
 
 jobs:
   analyze-trending:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 允许写入仓库
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
@@ -28,14 +29,6 @@ jobs:
       - name: Create data directory
         run: mkdir -p data
       
-      - name: Restore database cache
-        uses: actions/cache@v3
-        with:
-          path: data/trending.db
-          key: trending-db-${{ github.run_number }}
-          restore-keys: |
-            trending-db-
-      
       - name: Run trending analyzer
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -46,10 +39,19 @@ jobs:
         run: |
           python src/main.py
       
-      - name: Upload database artifact
-        if: always()
-        uses: actions/upload-artifact@v3
+      - name: Commit database changes
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          name: trending-database
+          commit_message: "🤖 Update trending database [skip ci]"
+          file_pattern: "data/trending.db"
+          commit_user_name: "GitHub Trending Bot"
+          commit_user_email: "actions@github.com"
+          commit_author: "GitHub Actions <actions@github.com>"
+      
+      - name: Upload database artifact (backup)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trending-database-${{ github.run_date }}
           path: data/trending.db
-          retention-days: 90
+          retention-days: 30
