@@ -9,7 +9,7 @@ class GeminiAnalyzer:
     
     def __init__(self, api_key: str = GEMINI_API_KEY):
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-1.5-pro')
+        self.model = genai.GenerativeModel('gemini-3-pro')
     
     def analyze_project(self, project: TrendingProject, 
                        readme_content: Optional[str] = None) -> str:
