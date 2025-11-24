@@ -93,7 +93,7 @@ class NtfyNotifier:
     
     def send_daily_summary(self, project_count: int, success_count: int):
         """发送每日总结"""
-        title = "📊 GitHub Trending 每日推送完成"
+        title = "GitHub Trending 每日推送完成"
         message = f"""今日共处理 {project_count} 个热门项目
 成功推送 {success_count} 个新项目分析
 
